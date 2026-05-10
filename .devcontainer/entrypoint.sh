@@ -28,4 +28,10 @@ echo ""
 echo "========================================"
 echo ""
 
-exec /usr/local/bin/xray -c "$CONFIG"
+/usr/local/bin/xray -c "$CONFIG" &
+XRAY_PID=$!
+
+while kill -0 "$XRAY_PID" 2>/dev/null; do
+    echo "[KakoolTunnel] alive - $(date '+%H:%M:%S')"
+    sleep 300
+done
