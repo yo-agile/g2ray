@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim
 
-LABEL maintainer="G2Ray" \
+LABEL maintainer="KakoolTunnel" \
       description="VLESS proxy via GitHub Codespaces"
 
 COPY install.sh /app/install.sh

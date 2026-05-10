@@ -1,5 +1,5 @@
 {
-  "name": "g2ray",
+  "name": "KakoolTunnel",
   "build": {
     "dockerfile": "./Dockerfile",
     "context": "."

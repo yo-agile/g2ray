@@ -1,4 +1,4 @@
-# G2Ray
+# KakoolTunnel
 
 > Automated VLESS proxy setup via GitHub Codespaces — works anywhere Codespaces is available.
 
