@@ -1,5 +1,5 @@
 {
-  "name": "KakoolTunnel",
+  "name": "@Kakoolnews",
   "build": {
     "dockerfile": "./Dockerfile",
     "context": "."

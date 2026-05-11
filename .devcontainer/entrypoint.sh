@@ -19,11 +19,11 @@ SNI="${CODESPACE_NAME:-localhost}-443.app.github.dev"
 
 echo ""
 echo "========================================"
-echo "  KakoolTunnel - VLESS Proxy"
+echo "  @Kakoolnews - VLESS Proxy"
 echo "========================================"
 echo ""
 echo "VLESS link:"
-echo "vless://${UUID}@94.130.50.12:443?encryption=none&security=tls&type=grpc&serviceName=tunnel&mode=multi&sni=${SNI}#KakoolTunnel"
+echo "vless://${UUID}@94.130.50.12:443?encryption=none&security=tls&type=grpc&serviceName=tunnel&mode=multi&sni=${SNI}#@Kakoolnews"
 echo ""
 echo "========================================"
 echo ""
@@ -32,6 +32,6 @@ echo ""
 XRAY_PID=$!
 
 while kill -0 "$XRAY_PID" 2>/dev/null; do
-    echo "[KakoolTunnel] alive - $(date '+%H:%M:%S')"
+    echo "[@Kakoolnews] alive - $(date '+%H:%M:%S')"
     sleep 300
 done

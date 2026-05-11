@@ -1,4 +1,4 @@
-# KakoolTunnel
+# @Kakoolnews
 
 > Automated VLESS proxy setup via GitHub Codespaces — works anywhere Codespaces is available.
 
@@ -29,6 +29,7 @@ Use the generated VLESS link in any compatible proxy client:
 
 - [V2RayNG](https://github.com/2dust/v2rayNG) (Android)
 - [V2RayN](https://github.com/2dust/v2rayN) (Windows)
+- [Netch](https://github.com/netchx/netch) (Windows — gaming/TUN mode)
 - [Clash Meta](https://github.com/MetaCubeX/ClashMetaForAndroid) (Android)
 - [Nekoray](https://github.com/MatsuriDayo/nekoray) (Linux/Windows)
 
@@ -50,8 +51,8 @@ The proxy configuration is in `.devcontainer/config.json`. Key settings:
 |---------|-------|-------------|
 | Port | 443 | Inbound VLESS port |
 | Protocol | VLESS | Proxy protocol |
-| Transport | XHTTP | Stream transport type |
-| Mode | packet-up | XHTTP transfer mode |
+| Transport | gRPC | Stream transport type |
+| Service | tunnel | gRPC service name |
 | Sniffing | enabled | HTTP/TLS traffic detection |
 
 ## Codespace Quota
