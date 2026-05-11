@@ -16,10 +16,9 @@
         "decryption": "none"
       },
       "streamSettings": {
-        "network": "grpc",
-        "grpcSettings": {
-          "serviceName": "tunnel",
-          "multiMode": true
+        "network": "ws",
+        "wsSettings": {
+          "path": "/"
         }
       },
       "sniffing": {

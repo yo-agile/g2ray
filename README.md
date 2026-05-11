@@ -51,8 +51,8 @@ The proxy configuration is in `.devcontainer/config.json`. Key settings:
 |---------|-------|-------------|
 | Port | 443 | Inbound VLESS port |
 | Protocol | VLESS | Proxy protocol |
-| Transport | gRPC | Stream transport type |
-| Service | tunnel | gRPC service name |
+| Transport | WebSocket | Stream transport type |
+| Path | / | WebSocket path |
 | Sniffing | enabled | HTTP/TLS traffic detection |
 
 ## Codespace Quota
