@@ -14,7 +14,7 @@
   },
   "postAttachCommand": {
     "public": "gh codespace ports visibility 443:public -c $CODESPACE_NAME",
-    "xray": "sudo /usr/local/bin/entrypoint.sh"
+    "xray": "sudo -E /usr/local/bin/entrypoint.sh"
   },
   "portsAttributes": {
     "443": {
