@@ -16,10 +16,10 @@
         "decryption": "none"
       },
       "streamSettings": {
-        "network": "xhttp",
-        "xhttpSettings": {
-          "mode": "packet-up",
-          "path": "/"
+        "network": "grpc",
+        "grpcSettings": {
+          "serviceName": "tunnel",
+          "multiMode": true
         }
       },
       "sniffing": {
