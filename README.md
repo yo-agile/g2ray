@@ -1,72 +1,110 @@
-# G2Ray
+# KakoolTunnel
 
-> Only works in places where you can open GitHub Codespaces
+> Automated VLESS proxy setup via GitHub Codespaces — works anywhere Codespaces is available.
 
-## ⚠️ Important Notice
+## Warning
 
-**Please read this before using this project:**
+**Use a secondary GitHub account (not your main account)** when forking and running this project. Running proxy servers may trigger GitHub's automated security systems or account restrictions.
 
-This project creates and runs a V2Ray proxy server. While the intention is for legitimate use, **we strongly recommend using a separate GitHub account (not your main account) when forking and running this project**. This is purely a precautionary measure, as there's a possibility it could trigger GitHub's automated security systems or account restrictions. Using an alternative account protects your main GitHub account in case of any unforeseen issues.
+## Features
 
-## Overview
+- **Auto-generated UUID** — each Codespace session gets a unique identity (no hardcoded credentials)
+- **Latest Xray** — automatically fetches the newest stable Xray-core release at build time
+- **Multi-architecture** — supports amd64, arm64, and armv7
+- **Traffic sniffing** — detects HTTP/TLS for smarter routing
+- **BitTorrent blocking** — prevents accidental P2P traffic through the proxy
+- **Health checks** — built-in Docker health monitoring
+- **Custom UUID** — optionally set `VLESS_UUID` env var to use your own UUID
 
-G2Ray is an automated setup for running a VLESS proxy through GitHub Codespaces. It provides a quick way to set up your own proxy server for accessing content from restricted regions.
+## Quick Start
 
-## Setup
+1. Fork this repository (use a secondary account)
+2. Click **Code** > **Codespaces** > **Create codespace on main**
+3. Wait 2–5 minutes for setup to complete
+4. Copy the VLESS link printed in the terminal
 
-1. **Create or use a secondary GitHub account** (highly recommended)
-2. Fork the repository to your account
-3. Click the green **"Code"** button above
-4. Go to the **"Codespaces"** tab
-5. Click **"Create codespace on main"**
-6. Wait for the setup to complete (usually 2-5 minutes)
+### Import the Link
 
-## How to Use
+Use the generated VLESS link in any compatible proxy client:
 
-1. **Wait for Codespace initialization** - The setup process takes a few minutes. All dependencies and configurations will be installed automatically.
+- [V2RayNG](https://github.com/2dust/v2rayNG) (Android)
+- [V2RayN](https://github.com/2dust/v2rayN) (Windows)
+- [Clash Meta](https://github.com/MetaCubeX/ClashMetaForAndroid) (Android)
+- [Nekoray](https://github.com/MatsuriDayo/nekoray) (Linux/Windows)
 
-2. **Get your VLESS link** - Once ready, your VLESS proxy link will be printed directly in the terminal
+## Configuration
 
-   ![Terminal Screenshot](./docs/screenshot.png)
+### Custom UUID
 
-3. **Import the link** - Copy the generated VLESS link and import it into:
-   - V2RayNG (Android)
-   - Clash Meta
-   - Or any other proxy application that supports VLESS
+Set the `VLESS_UUID` environment variable in your Codespace to use a specific UUID instead of an auto-generated one:
 
-## Important Notes
+```
+VLESS_UUID=your-custom-uuid-here
+```
 
-### GitHub Codespaces Quota
-- GitHub provides **120 free compute hours per month** (per core)
-- For a 2-core Codespace: 120 ÷ 2 = 60 hours/month
-- **Stop your Codespace when not in use** to preserve your hours
-- You can always restart it later when needed
+### Xray Config
 
-### Compatible Networks
-Tested on Shecan (free plan). If these IPs work for you, the proxy should be functional:
+The proxy configuration is in `.devcontainer/config.json`. Key settings:
+
+| Setting | Value | Description |
+|---------|-------|-------------|
+| Port | 443 | Inbound VLESS port |
+| Protocol | VLESS | Proxy protocol |
+| Transport | XHTTP | Stream transport type |
+| Mode | packet-up | XHTTP transfer mode |
+| Sniffing | enabled | HTTP/TLS traffic detection |
+
+## Codespace Quota
+
+GitHub provides **120 free core-hours/month**:
+
+| Cores | Hours/Month |
+|-------|-------------|
+| 2 | 60 |
+| 4 | 30 |
+| 8 | 15 |
+
+**Stop your Codespace when not in use** to conserve hours.
+
+## Compatible Networks
+
+Tested with Shecan (free plan). If these IPs are reachable from your network, the proxy should work:
+
 - `63.141.252.203`
 - `50.7.5.83`
 - `94.130.50.12`
 
-If these IPs don't work, try different datacenters or ISPs from your region.
+## Troubleshooting
 
-### Troubleshooting
-- If the Codespace fails to start, try creating a new one
-- Check that your GitHub account has Codespaces enabled
-- Ensure you have enough compute hours remaining for the month
-- For network issues, try switching proxy protocols in your client app
+| Problem | Solution |
+|---------|----------|
+| Codespace fails to start | Delete it and create a new one |
+| No VLESS link shown | Check the terminal output for errors |
+| Connection timeout | Try a different datacenter or ISP |
+| Port not accessible | Ensure port 443 is set to public visibility |
 
-## Support the Project
+## Project Structure
 
-If you find this project useful, consider supporting its development:
+```
+.devcontainer/
+  Dockerfile          # Container image definition
+  config.json         # Xray configuration template (UUID injected at runtime)
+  devcontainer.json   # Codespace settings and lifecycle hooks
+  entrypoint.sh       # Startup script: generates UUID, configures Xray, prints VLESS link
+  install.sh          # Downloads and installs the latest Xray binary
+docs/
+  screenshot.png      # Terminal screenshot for reference
+```
 
-- [Buy me a coffee ☕](https://www.buymeacoffee.com/amiremohamadi)
+## Support
+
+- [Buy me a coffee](https://www.buymeacoffee.com/amiremohamadi)
 - Ethereum: `0x5724c38100b2aE3d2547974f46D0f2f49eb2D152`
 
 ## Disclaimer
 
-This tool is provided for educational and legitimate use only. Users are responsible for complying with their local laws and regulations regarding proxy usage. The author is not responsible for any misuse or consequences arising from the use of this tool.
+This tool is for educational and legitimate use only. Users are responsible for complying with local laws and regulations regarding proxy usage. The author is not responsible for any misuse.
 
 ## License
 
-This project is open-source. Please check the LICENSE file for details.
+This project is open-source. See the LICENSE file for details.
