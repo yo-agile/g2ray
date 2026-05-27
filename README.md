@@ -1,6 +1,6 @@
 # @Kakoolnews
 
-> Automated VLESS proxy setup via GitHub Codespaces — works anywhere Codespaces is available.
+> Automated VLESS proxy setup via GitHub Codespaces with Cloudflare Tunnel — works anywhere Codespaces is available.
 
 ## Warning
 
@@ -8,20 +8,20 @@
 
 ## Features
 
-- **Fixed UUID** — consistent identity across all sessions (no hardcoded credentials)
-- **Latest Xray** — automatically fetches the newest stable Xray-core release at build time
-- **Multi-architecture** — supports amd64, arm64, and armv7
-- **Traffic sniffing** — detects HTTP/TLS for smarter routing
-- **BitTorrent blocking** — prevents accidental P2P traffic through the proxy
-- **Health checks** — built-in Docker health monitoring
-- **Custom UUID** — optionally set `VLESS_UUID` env var to use your own UUID
+- **Fixed UUID** — consistent identity across all sessions: `12345678-1234-1234-1234-123456789abc`
+- **Cloudflare Tunnel** — automatically exposes proxy via `*.trycloudflare.com` domain
+- **Latest Xray-core** — automatically fetches the newest stable release at build time
+- **WebSocket Transport** — VLESS over WebSocket for better compatibility
+- **Bandwidth Tracking** — uses vnstat to monitor network usage
+- **Interactive Commands** — restart Xray on demand from terminal
 
 ## Quick Start
 
 1. Fork this repository (use a secondary account)
 2. Click **Code** > **Codespaces** > **Create codespace on main**
-3. Wait 2–5 minutes for setup to complete
-4. Copy the VLESS link printed in the terminal
+3. Wait 3–5 minutes for setup to complete
+4. Copy the VLESS link printed in the terminal (starts with `🔗 YOUR VLESS LINK:`)
+5. The VLESS link is also saved to `/workspaces/vless_link.txt`
 
 ### Import the Link
 
@@ -35,12 +35,12 @@ Use the generated VLESS link in any compatible proxy client:
 
 ## Configuration
 
-### Custom UUID
+### Fixed UUID
 
-Set the `VLESS_UUID` environment variable in your Codespace to use a specific UUID instead of an auto-generated one:
+This repository uses a fixed UUID for all sessions:
 
 ```
-VLESS_UUID=your-custom-uuid-here
+12345678-1234-1234-1234-123456789abc
 ```
 
 ### Xray Config
@@ -49,11 +49,41 @@ The proxy configuration is in `.devcontainer/config.json`. Key settings:
 
 | Setting | Value | Description |
 |---------|-------|-------------|
-| Port | 443 | Inbound VLESS port |
 | Protocol | VLESS | Proxy protocol |
-| Transport | WebSocket | Stream transport type |
-| Path | / | WebSocket path |
-| Sniffing | enabled | HTTP/TLS traffic detection |
+| Transport | WebSocket (ws) | Stream transport type |
+| Path | /ws | WebSocket path |
+| Internal Port | 10000 | Xray listening port |
+| TLS | enabled | TLS encryption via Cloudflare |
+
+### Cloudflare Tunnel
+
+The proxy is exposed via Cloudflare Tunnel (`cloudflared`) which provides:
+- Automatic HTTPS/TLS termination
+- Dynamic hostname (`*.trycloudflare.com`)
+- No port forwarding required
+
+## Commands
+
+Once your Codespace is running, you can use these commands in the terminal:
+
+| Command | Description |
+|---------|-------------|
+| `1` | Restart Xray proxy |
+| `q` | Quit and stop all services |
+
+### Bandwidth Usage
+
+To check network traffic usage:
+
+```bash
+bash /workspaces/usage.sh
+```
+
+Example output:
+```
+Total received: 1.23 GB
+Total sent: 0.45 GB
+```
 
 ## Codespace Quota
 
@@ -67,38 +97,37 @@ GitHub provides **120 free core-hours/month**:
 
 **Stop your Codespace when not in use** to conserve hours.
 
-## Compatible Networks
-
-Tested with Shecan (free plan). If these IPs are reachable from your network, the proxy should work:
-
-- `94.130.13.19`
-
 ## Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
 | Codespace fails to start | Delete it and create a new one |
 | No VLESS link shown | Check the terminal output for errors |
-| Connection timeout | Try a different datacenter or ISP |
-| Port not accessible | Ensure port 443 is set to public visibility |
+| Connection timeout | Wait a moment and try again; tunnel may still be establishing |
+| Tunnel hostname not found | Check if cloudflared is running properly |
 
 ## Project Structure
 
 ```
 .devcontainer/
-  Dockerfile          # Container image definition
-  config.json         # Xray configuration template (UUID injected at runtime)
+  Dockerfile          # Container image definition (Xray, cloudflared, vnstat)
+  config.json         # Xray VLESS/WebSocket configuration
   devcontainer.json   # Codespace settings and lifecycle hooks
-  entrypoint.sh       # Startup script: generates UUID, configures Xray, prints VLESS link
-  install.sh          # Downloads and installs the latest Xray binary
+  setup.sh            # Main setup script (starts Xray, cloudflared tunnel)
+  usage.sh            # Bandwidth monitoring script
 docs/
   screenshot.png      # Terminal screenshot for reference
 ```
 
-## Support
+## VLESS Link Format
 
-- [Buy me a coffee](https://www.buymeacoffee.com/amiremohamadi)
-- Ethereum: `0x5724c38100b2aE3d2547974f46D0f2f49eb2D152`
+The generated VLESS link follows this format:
+
+```
+vless://12345678-1234-1234-1234-123456789abc@<HOSTNAME>:443?encryption=none&security=tls&type=ws&host=<HOSTNAME>&path=%2Fws#Kakool%20news
+```
+
+Where `<HOSTNAME>` is dynamically assigned by Cloudflare Tunnel (e.g., `abc123.trycloudflare.com`).
 
 ## Disclaimer
 

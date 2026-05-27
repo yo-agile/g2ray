@@ -1,44 +1,46 @@
 FROM debian:bookworm-slim
 
-COPY install.sh /app/install.sh
-
-WORKDIR /app
-
-# Install dependencies with clear output
-RUN echo "📦 Installing system dependencies..." && \
+# Install system dependencies
+RUN echo "Installing system dependencies..." && \
     apt-get update && apt-get install -y --no-install-recommends \
-    bash git curl wget unzip tzdata openssl ca-certificates \
-    && echo "✅ Dependencies installed successfully" \
+    bash curl wget unzip tzdata openssl ca-certificates vnstat \
+    && echo "System dependencies installed" \
     && rm -rf /var/lib/apt/lists/*
 
-# Setup and configure xray
-RUN echo "⚙️  Running installation script..." && \
-    chmod +x /app/install.sh && /app/install.sh && \
-    echo "✅ Installation completed successfully"
+# Install Xray-core (latest)
+RUN echo "Installing Xray-core..." && \
+    ARCH=$(dpkg --print-architecture) && \
+    case "$ARCH" in \
+        amd64) XRAY_ARCH="64" ;; \
+        arm64) XRAY_ARCH="arm64-v8a" ;; \
+        armhf) XRAY_ARCH="arm32-v7a" ;; \
+        *) echo "Unsupported architecture: $ARCH" && exit 1 ;; \
+    esac && \
+    XRAY_VERSION=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases/latest | grep -oP '"tag_name":\s*"\K[^"]+' | sed 's/v//') && \
+    echo "Found Xray version: $XRAY_VERSION for $ARCH" && \
+    wget -O /tmp/xray.zip "https://github.com/XTLS/Xray-core/releases/download/v${XRAY_VERSION}/Xray-linux-${XRAY_ARCH}.zip" && \
+    unzip -o /tmp/xray.zip xray -d /usr/local/bin/ && \
+    chmod +x /usr/local/bin/xray && \
+    rm /tmp/xray.zip && \
+    echo "Xray-core installed"
 
-COPY config.json /etc/config.json
+# Install cloudflared (Cloudflare Tunnel client)
+RUN echo "Installing cloudflared..." && \
+    curl -fsSL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /usr/local/bin/cloudflared && \
+    chmod +x /usr/local/bin/cloudflared && \
+    echo "cloudflared installed"
 
-# Create startup message with clear banner
-RUN echo '#!/bin/bash' > /app/startup.sh && \
-    echo 'echo ""' >> /app/startup.sh && \
-    echo 'echo "╔═══════════════════════════════════════��════════════════════╗"' >> /app/startup.sh && \
-    echo 'echo "║          🚀 G2RAY - XRAY SERVICE INITIALIZED 🚀           ║"' >> /app/startup.sh && \
-    echo 'echo "╚════════════════════════════════════════════════════════════╝"' >> /app/startup.sh && \
-    echo 'echo ""' >> /app/startup.sh && \
-    echo 'echo "📋 Configuration:"' >> /app/startup.sh && \
-    echo 'echo "   • Config File: /etc/config.json"' >> /app/startup.sh && \
-    echo 'echo ""' >> /app/startup.sh && \
-    echo 'echo "🔗 VLESS Connection Details:"' >> /app/startup.sh && \
-    echo 'echo "   • Link: vless://550e8400-e29b-41d4-a716-446655440000@94.130.50.12:443"' >> /app/startup.sh && \
-    echo 'echo "   • Encryption: none"' >> /app/startup.sh && \
-    echo 'echo "   • Security: tls"' >> /app/startup.sh && \
-    echo 'echo "   • Type: xhttp"' >> /app/startup.sh && \
-    echo 'echo "   • Mode: packet-up"' >> /app/startup.sh && \
-    echo 'echo "   • SNI: ${CODESPACE_NAME}-443.app.github.dev"' >> /app/startup.sh && \
-    echo 'echo ""' >> /app/startup.sh && \
-    echo 'echo "✨ Service is running and ready to accept connections..."' >> /app/startup.sh && \
-    echo 'echo ""' >> /app/startup.sh && \
-    echo 'exec /usr/local/bin/xray -c /etc/config.json' >> /app/startup.sh && \
-    chmod +x /app/startup.sh
+# Create required directories
+RUN mkdir -p /workspaces && chmod 755 /workspaces
 
-CMD ["/app/startup.sh"]
+# Copy xray config
+COPY config.json /etc/xray_config.json
+
+# Copy setup and usage scripts
+COPY setup.sh /workspaces/setup.sh
+COPY usage.sh /workspaces/usage.sh
+RUN chmod +x /workspaces/setup.sh /workspaces/usage.sh
+
+WORKDIR /workspaces
+
+CMD ["/workspaces/setup.sh"]

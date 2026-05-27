@@ -1,5 +1,5 @@
 {
-  "name": "ghtun",
+  "name": "g2ray-vless",
   "build": {
     "dockerfile": "./Dockerfile",
     "context": "."
@@ -7,20 +7,17 @@
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": false
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {
-      "version": "latest"
     }
   },
-  "postAttachCommand": "bash -lc '/app/startup.sh'",
+  "postCreateCommand": "bash /workspaces/setup.sh",
   "portsAttributes": {
-    "443": {
-      "label": "xray",
+    "10000": {
+      "label": "Xray",
       "protocol": "http",
       "onAutoForward": "silent"
     }
   },
-  "forwardPorts": [443],
+  "forwardPorts": [10000],
   "hostRequirements": {
     "cpus": 2
   }

@@ -1,28 +1,30 @@
 {
   "inbounds": [
     {
-      "port": 443,
+      "port": 10000,
+      "listen": "127.0.0.1",
       "protocol": "vless",
       "settings": {
         "clients": [
           {
-            "id": "550e8400-e29b-41d4-a716-446655440000"
+            "id": "12345678-1234-1234-1234-123456789abc",
+            "level": 0
           }
         ],
         "decryption": "none"
       },
       "streamSettings": {
-        "network": "xhttp",
-        "xhttpSettings": {
-          "mode": "packet-up",
-          "path": "/"
+        "network": "ws",
+        "wsSettings": {
+          "path": "/ws"
         }
       }
     }
   ],
   "outbounds": [
     {
-      "protocol": "freedom"
+      "protocol": "freedom",
+      "tag": "direct"
     }
   ]
 }
