@@ -67,6 +67,8 @@ Once your Codespace is running, you can use these commands in the terminal:
 The VLESS links are displayed when you open the terminal:
 
 ```
+vless://12345678-1234-1234-1234-123456789abc@<CODESPACE>-443.app.github.dev:443?encryption=none&security=tls&sni=<CODESPACE>-443.app.github.dev&insecure=0&allowInsecure=0&type=ws&path=%2F#Kakool%20news
+
 vless://12345678-1234-1234-1234-123456789abc@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-1
 
 vless://12345678-1234-1234-1234-123456789abc@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-2
