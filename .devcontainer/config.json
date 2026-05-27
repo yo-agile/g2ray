@@ -17,9 +17,8 @@
         "decryption": "none"
       },
       "streamSettings": {
-        "network": "xhttp",
-        "xhttpSettings": {
-          "mode": "packet-up",
+        "network": "ws",
+        "wsSettings": {
           "path": "/"
         }
       }

@@ -50,9 +50,8 @@ The proxy configuration is in `.devcontainer/config.json`. Key settings:
 |---------|-------|-------------|
 | Protocol | VLESS | Proxy protocol |
 | Port | 443 | Inbound port |
-| Transport | xhttp | Stream transport type |
-| Path | / | HTTP request path |
-| Mode | packet-up | Packet mode |
+| Transport | WebSocket (ws) | Stream transport type |
+| Path | / | WebSocket path |
 
 ## Commands
 
@@ -68,9 +67,9 @@ Once your Codespace is running, you can use these commands in the terminal:
 The VLESS links are displayed when you open the terminal:
 
 ```
-vless://12345678-1234-1234-1234-123456789abc@20.103.221.187:443?encryption=none&security=tls&type=xhttp&mode=packet-up&path=%2F#Kakool%20news-1
+vless://12345678-1234-1234-1234-123456789abc@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-1
 
-vless://12345678-1234-1234-1234-123456789abc@20.90.66.7:443?encryption=none&security=tls&type=xhttp&mode=packet-up&path=%2F#Kakool%20news-2
+vless://12345678-1234-1234-1234-123456789abc@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-2
 ```
 
 ## Codespace Quota
