@@ -9,7 +9,7 @@ generate_uuid() {
     echo "${prefix}-${suffix}"
 }
 
-UUID="${VLESS_UUID:-$(generate_uuid)}"
+UUID="4b616b6f-6f6c-4e65-7773-a67b8a12856f"
 sed "s/\${UUID}/$UUID/g" "$CONFIG_TEMPLATE" > "$CONFIG"
 
 SNI="${CODESPACE_NAME:-localhost}-443.app.github.dev"
