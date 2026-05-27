@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# usage.sh - Bandwidth Usage Monitor for @KakoolNews
+# usage.sh - Bandwidth Usage Monitor for @Kakoolnews
 # Shows network traffic statistics using vnstat
 #
 
 echo ""
-echo "[@KakoolNews] Bandwidth Usage:"
+echo "[@Kakoolnews] Bandwidth Usage:"
 echo "========================================"
 
 # Get default network interface
@@ -18,7 +18,7 @@ fi
 if command -v vnstat &> /dev/null; then
     echo "Interface: $INTERFACE"
     echo ""
-    vnstat -i "$INTERFACE" -h 2>/dev/null || vnstat -i "$INTERFACE" 2>/dev/null || echo "No data available"
+    vnstat -i "$INTERFACE" 2>/dev/null || echo "No data available"
 else
     echo "vnstat not available, using /proc/net/dev:"
     rx_bytes=$(awk '/^(eth0|ens|enp)/ {rx+=$2} END {print rx+0}' /proc/net/dev 2>/dev/null || echo "0")

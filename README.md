@@ -8,19 +8,18 @@
 
 ## Features
 
-- **Fixed UUID** — consistent identity across all sessions: `db9c5b9e-06b9-40cf-b987-575afcb30aea`
-- **Latest Xray-core** — automatically fetches the newest stable Xray-core release
-- **Multi-architecture** — supports amd64, arm64, and armv7
-- **Bandwidth Tracking** — uses vnstat to monitor network usage
-- **Quick Restart** — type `1` to restart Xray anytime
+- **Static UUID** — consistent identity: `db9c5b9e-06b9-40cf-b987-575afcb30aea`
+- **Latest Xray-core** — automatically fetches the newest stable release
+- **WebSocket Transport** — ws protocol for better compatibility
+- **Bandwidth Tracking** — uses vnstat to monitor usage
+- **Quick Restart** — type `1` to restart Xray
 
 ## Quick Start
 
 1. Fork this repository (use a secondary account)
-2. Click **Code** > **Codespaces** > **Create codespace on main**
+2. Click **Code** > **Codespaces** > **Create codespace on master**
 3. Wait 2–5 minutes for setup to complete
 4. Copy the VLESS links printed in the terminal
-5. Import the link into your proxy client
 
 ### Import the Link
 
@@ -28,51 +27,23 @@ Use the generated VLESS link in any compatible proxy client:
 
 - [V2RayNG](https://github.com/2dust/v2rayNG) (Android)
 - [V2RayN](https://github.com/2dust/v2rayN) (Windows)
-- [Netch](https://github.com/netchx/netch) (Windows — gaming/TUN mode)
+- [Netch](https://github.com/netchx/netch) (Windows)
 - [Clash Meta](https://github.com/MetaCubeX/ClashMetaForAndroid) (Android)
-- [Nekoray](https://github.com/MatsuriDayo/nekoray) (Linux/Windows)
-
-## Configuration
-
-### Fixed UUID
-
-This repository uses a fixed UUID for all sessions. You will never need to re-import the link:
-
-```
-db9c5b9e-06b9-40cf-b987-575afcb30aea
-```
-
-### Xray Config
-
-The proxy configuration is in `.devcontainer/config.json`. Key settings:
-
-| Setting | Value | Description |
-|---------|-------|-------------|
-| Protocol | VLESS | Proxy protocol |
-| Port | 443 | Inbound port |
-| Transport | WebSocket (ws) | Stream transport type |
-| Path | / | WebSocket path |
-
-## Commands
-
-Once your Codespace is running, you can use these commands in the terminal:
-
-| Command | Description |
-|---------|-------------|
-| `1` | Restart Xray proxy |
-| `bash /workspaces/usage.sh` | Check bandwidth usage |
 
 ## VLESS Connection Strings
 
-The VLESS links are displayed when you open the terminal:
-
 ```
-vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@<CODESPACE>-443.app.github.dev:443?encryption=none&security=tls&sni=<CODESPACE>-443.app.github.dev&insecure=0&allowInsecure=0&type=ws&path=%2F#Kakool%20news
+vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#@Kakoolnews-1
 
-vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-1
-
-vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-2
+vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#@Kakoolnews-2
 ```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `1` | Restart Xray |
+| `bash /workspaces/usage.sh` | Check bandwidth usage |
 
 ## Codespace Quota
 
@@ -86,31 +57,18 @@ GitHub provides **120 free core-hours/month**:
 
 **Stop your Codespace when not in use** to conserve hours.
 
-## Troubleshooting
-
-| Problem | Solution |
-|---------|----------|
-| Codespace fails to start | Delete it and create a new one |
-| No VLESS link shown | Check the terminal output for errors |
-| Connection timeout | Try a different datacenter or ISP |
-
 ## Project Structure
 
 ```
 .devcontainer/
   Dockerfile          # Container image definition
-  config.json         # Xray configuration with fixed UUID
-  devcontainer.json   # Codespace settings and lifecycle hooks
-  setup.sh           # Downloads and installs Xray binary
-  usage.sh           # Bandwidth monitoring script
-docs/
-  screenshot.png      # Terminal screenshot for reference
+  config.json         # Xray WebSocket configuration
+  devcontainer.json   # Codespace settings
+  entrypoint.sh       # Startup script (prints VLESS links)
+  install.sh          # Xray installation
+  usage.sh           # Bandwidth monitoring
 ```
 
 ## Disclaimer
 
-This tool is for educational and legitimate use only. Users are responsible for complying with local laws and regulations regarding proxy usage. The author is not responsible for any misuse.
-
-## License
-
-This project is open-source. See the LICENSE file for details.
+This tool is for educational and legitimate use only. The author is not responsible for any misuse.

@@ -1,17 +1,16 @@
 {
   "log": {
-    "loglevel": "warning"
+    "loglevel": "warning",
+    "access": "none"
   },
   "inbounds": [
     {
-      "tag": "vless-in",
       "port": 443,
       "protocol": "vless",
       "settings": {
         "clients": [
           {
-            "id": "db9c5b9e-06b9-40cf-b987-575afcb30aea",
-            "flow": ""
+            "id": "db9c5b9e-06b9-40cf-b987-575afcb30aea"
           }
         ],
         "decryption": "none"
@@ -21,14 +20,30 @@
         "wsSettings": {
           "path": "/"
         }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
       }
     }
   ],
   "outbounds": [
     {
-      "tag": "direct",
       "protocol": "freedom",
-      "settings": {}
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
     }
-  ]
+  ],
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "block",
+        "protocol": ["bittorrent"]
+      }
+    ]
+  }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "g2ray",
+  "name": "@Kakoolnews",
   "build": {
-    "dockerfile": "Dockerfile",
+    "dockerfile": "./Dockerfile",
     "context": "."
   },
   "features": {
@@ -13,12 +13,12 @@
     }
   },
   "postAttachCommand": {
-    "expose": "gh codespace ports visibility 443:public -c $CODESPACE_NAME",
-    "start": "sudo /usr/local/bin/xray run -c /etc/xray/g2ray.json"
+    "public": "gh codespace ports visibility 443:public -c $CODESPACE_NAME",
+    "xray": "sudo -E /usr/local/bin/entrypoint.sh"
   },
   "portsAttributes": {
     "443": {
-      "label": "g2ray",
+      "label": "xray-vless",
       "protocol": "http",
       "onAutoForward": "silent"
     }
