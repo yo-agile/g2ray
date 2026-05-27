@@ -1,8 +1,8 @@
 #!/bin/sh
-set -eu
 
 CONFIG_TEMPLATE="/etc/config.template.json"
 CONFIG="/etc/config.json"
+PID_FILE="/tmp/xray.pid"
 
 generate_uuid() {
     prefix="4b616b6f-6f6c-4e65-7773"
@@ -10,9 +10,7 @@ generate_uuid() {
     echo "${prefix}-${suffix}"
 }
 
-SERVER_IP="${SERVER_IP:-localhost}"
 UUID="${VLESS_UUID:-$(generate_uuid)}"
-
 sed "s/\${UUID}/$UUID/g" "$CONFIG_TEMPLATE" > "$CONFIG"
 
 SNI="${CODESPACE_NAME:-localhost}-443.app.github.dev"
@@ -21,14 +19,10 @@ IP2="20.103.221.187"
 
 bytes_to_human() {
     local b=$1
-    if [ "$b" -lt 1024 ]; then
-        echo "${b}B"
-    elif [ "$b" -lt 1048576 ]; then
-        echo "$((b / 1024))KB"
-    elif [ "$b" -lt 1073741824 ]; then
-        echo "$(echo "scale=1; $b / 1048576" | bc 2>/dev/null || echo "$((b / 1048576))")MB"
-    else
-        echo "$(echo "scale=2; $b / 1073741824" | bc 2>/dev/null || echo "$((b / 1073741824))")GB"
+    if [ "$b" -lt 1024 ]; then echo "${b}B"
+    elif [ "$b" -lt 1048576 ]; then echo "$((b / 1024))KB"
+    elif [ "$b" -lt 1073741824 ]; then echo "$(echo "scale=1; $b / 1048576" | bc 2>/dev/null || echo "$((b / 1048576))")MB"
+    else echo "$(echo "scale=2; $b / 1073741824" | bc 2>/dev/null || echo "$((b / 1073741824))")GB"
     fi
 }
 
@@ -40,59 +34,39 @@ show_usage() {
             tx=$((tx + $(cat /sys/class/net/$iface/statistics/tx_bytes 2>/dev/null || echo 0)))
         fi
     done
-    if [ "$rx" -eq 0 ]; then
-        rx=$(awk '/^(eth0|ens|enp)/ {rx+=$2} END {print rx+0}' /proc/net/dev 2>/dev/null || echo "0")
-        tx=$(awk '/^(eth0|ens|enp)/ {tx+=$10} END {print tx+0}' /proc/net/dev 2>/dev/null || echo "0")
-    fi
-    echo "Download: $(bytes_to_human $rx) | Upload: $(bytes_to_human $tx) | Total: $(bytes_to_human $((rx + tx)))"
+    [ "$rx" -eq 0 ] && rx=$(awk '/^(eth0|ens|enp)/ {rx+=$2} END {print rx+0}' /proc/net/dev 2>/dev/null || echo "0")
+    [ "$tx" -eq 0 ] && tx=$(awk '/^(eth0|ens|enp)/ {tx+=$10} END {print tx+0}' /proc/net/dev 2>/dev/null || echo "0")
+    echo "[$(date '+%H:%M:%S')] Download: $(bytes_to_human $rx) | Upload: $(bytes_to_human $tx) | Total: $(bytes_to_human $((rx + tx)))"
 }
-
-echo "========================================"
-echo "  @KakoolNews - VLESS Proxy"
-echo "========================================"
-echo "UUID: $UUID"
-show_usage
-echo ""
-echo "VLESS links:"
-echo "vless://${UUID}@${IP1}:443?encryption=none&security=tls&sni=${SNI}&insecure=0&allowInsecure=0&type=ws&path=%2F#%40KakoolNews-1"
-echo "vless://${UUID}@${IP2}:443?encryption=none&security=tls&sni=${SNI}&insecure=0&allowInsecure=0&type=ws&path=%2F#%40KakoolNews-2"
-echo "========================================"
-echo ""
-echo "Commands:"
-echo "  usage     - Show bandwidth"
-echo "  restart   - Restart Xray"
-echo "  status    - Check Xray status"
-echo ""
-
-PID_FILE="/tmp/xray.pid"
 
 start_xray() {
     /usr/local/bin/xray -c "$CONFIG" &
     echo $! > "$PID_FILE"
 }
 
-case "${1:-start}" in
-    start)
-        start_xray
-        echo "Xray started (PID: $(cat $PID_FILE))"
-        ;;
-    restart)
-        [ -f "$PID_FILE" ] && kill $(cat $PID_FILE) 2>/dev/null || true
-        sleep 1
-        start_xray
-        echo "Xray restarted (PID: $(cat $PID_FILE))"
-        ;;
-    status)
-        if [ -f "$PID_FILE" ] && kill -0 $(cat $PID_FILE) 2>/dev/null; then
-            echo "Xray running (PID: $(cat $PID_FILE))"
-        else
-            echo "Xray not running"
-        fi
-        ;;
-    usage)
+echo "========================================"
+echo "  @KakoolNews - VLESS Proxy"
+echo "========================================"
+echo "UUID: $UUID"
+echo ""
+echo "vless://${UUID}@${IP1}:443?encryption=none&security=tls&sni=${SNI}&insecure=0&allowInsecure=0&type=ws&path=%2F#%40KakoolNews-1"
+echo "vless://${UUID}@${IP2}:443?encryption=none&security=tls&sni=${SNI}&insecure=0&allowInsecure=0&type=ws&path=%2F#%40KakoolNews-2"
+echo "========================================"
+echo ""
+echo "Restart: pkill xray; /usr/local/bin/xray -c /etc/config.json &"
+echo ""
+show_usage
+
+# Background loop: show usage every 2 minutes
+(
+    while true; do
+        sleep 120
         show_usage
-        ;;
-    *)
-        echo "Usage: $0 {start|restart|status|usage}"
-        ;;
-esac
+    done
+) &
+
+start_xray
+echo "Xray running - PID: $(cat $PID_FILE)"
+
+# Keep script running
+wait
