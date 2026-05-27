@@ -13,7 +13,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY config.json /etc/config.template.json
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN mkdir -p /workspaces/g2ray/.devcontainer && \
+    cp config.json /workspaces/g2ray/.devcontainer/config.json
 COPY usage.sh /workspaces/usage.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh /workspaces/usage.sh
+COPY export.sh /workspaces/g2ray/.devcontainer/export.sh
+COPY setup.sh /workspaces/g2ray/.devcontainer/setup.sh
+COPY install.sh /workspaces/g2ray/.devcontainer/install.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh /workspaces/usage.sh /workspaces/g2ray/.devcontainer/*.sh
 
 CMD ["/usr/local/bin/entrypoint.sh"]

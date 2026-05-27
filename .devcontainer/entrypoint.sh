@@ -3,10 +3,24 @@ set -eu
 
 CONFIG_TEMPLATE="/etc/config.template.json"
 CONFIG="/etc/config.json"
+UUID_FILE="/tmp/vless_uuid.txt"
 
-# Static UUID - same for all sessions (never changes)
-UUID="dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb"
+# Generate UUID once and save to file for persistence across restarts
+generate_static_uuid() {
+    if [ -f "$UUID_FILE" ] && [ -s "$UUID_FILE" ]; then
+        cat "$UUID_FILE"
+    else
+        # Generate a new UUID and save it
+        UUID=$(cat /proc/sys/kernel/random/uuid)
+        echo "$UUID" > "$UUID_FILE"
+        echo "$UUID"
+    fi
+}
 
+# Get or create static UUID
+UUID=$(generate_static_uuid)
+
+# Save UUID to config template for Xray
 sed "s/\${UUID}/$UUID/g" "$CONFIG_TEMPLATE" > "$CONFIG"
 
 SNI="${CODESPACE_NAME:-localhost}-443.app.github.dev"
