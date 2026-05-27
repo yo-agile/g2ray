@@ -12,22 +12,12 @@ detect_arch() {
     esac
 }
 
-fetch_latest_version() {
-    version=$(wget -qO- "https://api.github.com/repos/XTLS/Xray-core/releases/latest" \
-        | grep '"tag_name"' | head -1 | sed 's/.*"tag_name": *"//;s/".*//')
-    if [ -z "$version" ]; then
-        echo "Failed to fetch latest Xray version" >&2
-        exit 1
-    fi
-    echo "$version"
-}
-
 ARCH="$(detect_arch)"
-VERSION="$(fetch_latest_version)"
+VERSION="v26.4.7"
 URL="https://github.com/XTLS/Xray-core/releases/download/${VERSION}/Xray-linux-${ARCH}.zip"
 
 echo "Downloading Xray ${VERSION} for linux-${ARCH}..."
-wget -O /tmp/xray.zip "$URL"
+wget -q -O /tmp/xray.zip "$URL"
 
 echo "Installing Xray..."
 unzip -o /tmp/xray.zip -d /tmp/xray
@@ -35,4 +25,4 @@ chmod +x /tmp/xray/xray
 mv /tmp/xray/xray "$XRAY_DIR/xray"
 
 rm -rf /tmp/xray.zip /tmp/xray
-echo "Xray ${VERSION} installed successfully."
+echo "Xray installed."
