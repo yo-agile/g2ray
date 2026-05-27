@@ -3,3 +3,4 @@
 *.tmp
 .env
 .DS_Store
+uuid.txt

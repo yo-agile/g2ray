@@ -3,14 +3,14 @@ set -eu
 
 CONFIG_TEMPLATE="/etc/config.template.json"
 CONFIG="/etc/config.json"
-UUID_FILE="/tmp/vless_uuid.txt"
+UUID_FILE="/workspaces/g2ray/.devcontainer/uuid.txt"
 
-# Generate UUID once and save to file for persistence across restarts
+# Generate UUID once and save to file for persistence across restarts and Codespace restarts
 generate_static_uuid() {
     if [ -f "$UUID_FILE" ] && [ -s "$UUID_FILE" ]; then
         cat "$UUID_FILE"
     else
-        # Generate a new UUID and save it
+        # Generate a new UUID and save it to persistent storage
         UUID=$(cat /proc/sys/kernel/random/uuid)
         echo "$UUID" > "$UUID_FILE"
         echo "$UUID"
