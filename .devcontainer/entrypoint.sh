@@ -5,7 +5,7 @@ CONFIG_TEMPLATE="/etc/config.template.json"
 CONFIG="/etc/config.json"
 
 # Static UUID - same for all sessions (never changes)
-UUID="db9c5b9e-06b9-40cf-b987-575afcb30aea"
+UUID="dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb"
 
 sed "s/\${UUID}/$UUID/g" "$CONFIG_TEMPLATE" > "$CONFIG"
 

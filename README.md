@@ -8,7 +8,7 @@
 
 ## Features
 
-- **Static UUID** — consistent identity: `db9c5b9e-06b9-40cf-b987-575afcb30aea`
+- **Static UUID** — consistent identity: `dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb`
 - **Latest Xray-core** — automatically fetches the newest stable release
 - **WebSocket Transport** — ws protocol for better compatibility
 - **Bandwidth Tracking** — monitors usage in human-readable format (MB, GB)
@@ -33,9 +33,9 @@ Use the generated VLESS link in any compatible proxy client:
 ## VLESS Connection Strings
 
 ```
-vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#@Kakoolnews-1
+vless://dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#@Kakoolnews-1
 
-vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#@Kakoolnews-2
+vless://dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#@Kakoolnews-2
 ```
 
 ## Commands
