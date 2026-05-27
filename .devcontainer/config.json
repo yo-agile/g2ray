@@ -10,7 +10,7 @@
       "settings": {
         "clients": [
           {
-            "id": "${UUID}"
+            "id": "dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb"
           }
         ],
         "decryption": "none"

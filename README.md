@@ -1,111 +1,88 @@
-# 🚀 Kakoolray
+# @Kakoolnews
 
-> یک راه‌اندازی ساده برای اجرای Xray داخل GitHub Codespaces
+> Automated VLESS proxy setup via GitHub Codespaces — works anywhere Codespaces is available.
 
----
+## Warning
 
-## ⚠️ هشدار مهم
+**Use a secondary GitHub account (not your main account)** when forking and running this project. Running proxy servers may trigger GitHub's automated security systems or account restrictions.
 
-قبل از استفاده از این پروژه لطفاً این متن را کامل بخوانید:
+## Features
 
-این پروژه برای اجرای یک سرور پروکسی VLESS داخل GitHub Codespaces طراحی شده است.  
-استفاده از آن باید فقط برای اهداف آموزشی و قانونی باشد.
+- **Static UUID** — consistent identity: `dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb`
+- **Latest Xray-core** — automatically fetches the newest stable release
+- **WebSocket Transport** — ws protocol for better compatibility
+- **Bandwidth Tracking** — monitors usage in human-readable format (MB, GB)
+- **Quick Restart** — type `1` to restart Xray
 
-🔒 پیشنهاد مهم:
-برای Fork کردن و استفاده از این پروژه بهتر است از یک اکانت GitHub جداگانه استفاده کنید.  
-این فقط یک اقدام احتیاطی است تا از هرگونه مشکل احتمالی با سیستم‌های امنیتی GitHub جلوگیری شود.
+## Quick Start
 
----
+1. Fork this repository (use a secondary account)
+2. Click **Code** > **Codespaces** > **Create codespace on master**
+3. Wait 2–5 minutes for setup to complete
+4. Copy the VLESS links printed in the terminal
 
-## 📌 توضیحات پروژه
+### Import the Link
 
-Kakoolray یک ابزار خودکار برای راه‌اندازی سریع Xray / VLESS داخل Codespaces است.
+Use the generated VLESS link in any compatible proxy client:
 
-این پروژه به شما کمک می‌کند:
-- یک سرور پروکسی شخصی داشته باشید
-- بدون نیاز به VPS
-- فقط با GitHub Codespaces
+- [V2RayNG](https://github.com/2dust/v2rayNG) (Android)
+- [V2RayN](https://github.com/2dust/v2rayN) (Windows)
+- [Netch](https://github.com/netchx/netch) (Windows)
+- [Clash Meta](https://github.com/MetaCubeX/ClashMetaForAndroid) (Android)
 
----
+## VLESS Connection Strings
 
-## 🚀 روش نصب و اجرا
+```
+vless://dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#@Kakoolnews-1
 
-### 1️⃣ Fork کردن پروژه
-روی دکمه Fork کلیک کنید و پروژه را به اکانت خود اضافه کنید.
+vless://dc6e89e8-ac8e-40c7-b8fd-1701a2f7ccfb@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#@Kakoolnews-2
+```
 
----
+## Commands
 
-### 2️⃣ ساخت Codespace
-1. وارد ریپوزیتوری شوید
-2. روی دکمه سبز Code بزنید
-3. تب Codespaces را انتخاب کنید
-4. روی Create codespace on main کلیک کنید
+| Command | Description |
+|---------|-------------|
+| `1` | Restart Xray |
+| `2` | Show bandwidth usage |
+| `q` | Quit |
 
----
+## Bandwidth Monitoring
 
-### 3️⃣ صبر کنید ⏳
-بعد از چند دقیقه تمام فایل‌ها و تنظیمات به صورت خودکار اجرا می‌شوند.
+The proxy tracks your internet usage and displays it in human-readable format:
 
----
+```
+[@Kakoolnews] Current Bandwidth:
+  Downloaded:  1.23GB
+  Uploaded:    456MB
+  Total:       1.68GB
+```
 
-### 4️⃣ دریافت لینک VLESS
-بعد از اجرای کامل، لینک VLESS در ترمینال نمایش داده می‌شود.
+Usage is automatically displayed when you start and can be checked anytime with command `2`.
 
-این لینک را کپی کنید و در هر اپلیکیشنی که vless را ساپورت میکنند اضافه کنید مانند :
-- V2RayNG (اندروید)
-- Clash Meta
-- ....
+## Codespace Quota
 
-## 🌐 آی‌پی‌های تست شده
+GitHub provides **120 free core-hours/month**:
 
-این IP ها در بعضی شبکه‌ها تست شده‌اند:
+| Cores | Hours/Month |
+|-------|-------------|
+| 2 | 60 |
+| 4 | 30 |
+| 8 | 15 |
 
-- 63.141.252.203
-- 50.7.5.83
-- 94.130.50.12
+**Stop your Codespace when not in use** to conserve hours.
 
-⚠️ اگر کار نکرد، ممکن است نیاز به تغییر شبکه یا ریجن داشته باشید.
+## Project Structure
 
----
+```
+.devcontainer/
+  Dockerfile          # Container image definition
+  config.json         # Xray WebSocket configuration
+  devcontainer.json   # Codespace settings
+  entrypoint.sh       # Startup script (prints VLESS links)
+  install.sh          # Xray installation
+  usage.sh           # Bandwidth monitoring
+```
 
-## ⏱️ محدودیت Codespaces
+## Disclaimer
 
-- GitHub به صورت رایگان 120 ساعت CPU در ماه ارائه می‌دهد
-- برای Codespace دو هسته‌ای یعنی حدود 60 ساعت استفاده
-- بعد از استفاده، حتما Codespace را Stop کنید
-
----
-
-## 🛠 مشکلات رایج
-
-❌ Codespace اجرا نمی‌شود  
-→ یک Codespace جدید بسازید
-
-❌ لینک کار نمی‌کند  
-→ سرور را Restart کنید یا IP را بررسی کنید
-
-❌ اتصال برقرار نمی‌شود  
-→ کلاینت خود را عوض کنید یا پروتکل را بررسی کنید
-
----
-
-## 💖 حمایت مالی
-
-اگر این پروژه برای شما مفید بود، می‌توانید از آن حمایت کنید:
-
-USDT BEP20 & ETH:  
-0xa5E3E5BbB48501ceB51Bce7d1A9F1B9165dee619
-
-USDT TRC20 & TRX:  
-TQa6cLCuuzbQpDBeJnQG9qVVNep3bt9x3E
-
-Bitcoin (BTC):  
-bc1qlzty8tld7d2mjv88nxh2vkmjegdtmsj95y0qcm
-
-TON:  
-UQBfqDm-0zGW7HjGnetVR1D_fY89LxkBIcwEv2bzKUc_K82S
-
----
-
-*Built with ❤️ by @Kakoolnews*
-
+This tool is for educational and legitimate use only. The author is not responsible for any misuse.

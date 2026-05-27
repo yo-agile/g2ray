@@ -7,15 +7,9 @@
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": false
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {
-      "version": "latest"
     }
   },
-  "postAttachCommand": {
-    "public": "gh codespace ports visibility 443:public -c $CODESPACE_NAME",
-    "xray": "sudo -E /usr/local/bin/entrypoint.sh"
-  },
+  "postAttachCommand": "sudo -E /usr/local/bin/entrypoint.sh",
   "portsAttributes": {
     "443": {
       "label": "xray-vless",
