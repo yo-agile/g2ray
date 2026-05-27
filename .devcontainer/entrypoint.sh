@@ -2,7 +2,6 @@
 
 CONFIG_TEMPLATE="/etc/config.template.json"
 CONFIG="/etc/config.json"
-PID_FILE="/tmp/xray.pid"
 
 generate_uuid() {
     prefix="4b616b6f-6f6c-4e65-7773"
@@ -39,11 +38,6 @@ show_usage() {
     echo "[$(date '+%H:%M:%S')] Download: $(bytes_to_human $rx) | Upload: $(bytes_to_human $tx) | Total: $(bytes_to_human $((rx + tx)))"
 }
 
-start_xray() {
-    /usr/local/bin/xray -c "$CONFIG" &
-    echo $! > "$PID_FILE"
-}
-
 echo "========================================"
 echo "  @KakoolNews - VLESS Proxy"
 echo "========================================"
@@ -55,18 +49,11 @@ echo "========================================"
 echo ""
 echo "Restart: pkill xray; /usr/local/bin/xray -c /etc/config.json &"
 echo ""
+
+/usr/local/bin/xray -c "$CONFIG" &
 show_usage
 
-# Background loop: show usage every 2 minutes
-(
-    while true; do
-        sleep 120
-        show_usage
-    done
-) &
-
-start_xray
-echo "Xray running - PID: $(cat $PID_FILE)"
-
-# Keep script running
-wait
+while true; do
+    sleep 120
+    show_usage
+done
