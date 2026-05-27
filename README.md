@@ -11,7 +11,7 @@
 - **Static UUID** — consistent identity: `db9c5b9e-06b9-40cf-b987-575afcb30aea`
 - **Latest Xray-core** — automatically fetches the newest stable release
 - **WebSocket Transport** — ws protocol for better compatibility
-- **Bandwidth Tracking** — uses vnstat to monitor usage
+- **Bandwidth Tracking** — monitors usage in human-readable format (MB, GB)
 - **Quick Restart** — type `1` to restart Xray
 
 ## Quick Start
@@ -43,7 +43,21 @@ vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.90.66.7:443?encryption=none&secu
 | Command | Description |
 |---------|-------------|
 | `1` | Restart Xray |
-| `bash /workspaces/usage.sh` | Check bandwidth usage |
+| `2` | Show bandwidth usage |
+| `q` | Quit |
+
+## Bandwidth Monitoring
+
+The proxy tracks your internet usage and displays it in human-readable format:
+
+```
+[@Kakoolnews] Current Bandwidth:
+  Downloaded:  1.23GB
+  Uploaded:    456MB
+  Total:       1.68GB
+```
+
+Usage is automatically displayed when you start and can be checked anytime with command `2`.
 
 ## Codespace Quota
 
