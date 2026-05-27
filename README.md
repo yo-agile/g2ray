@@ -8,7 +8,7 @@
 
 ## Features
 
-- **Fixed UUID** — consistent identity across all sessions: `12345678-1234-1234-1234-123456789abc`
+- **Fixed UUID** — consistent identity across all sessions: `db9c5b9e-06b9-40cf-b987-575afcb30aea`
 - **Latest Xray-core** — automatically fetches the newest stable Xray-core release
 - **Multi-architecture** — supports amd64, arm64, and armv7
 - **Bandwidth Tracking** — uses vnstat to monitor network usage
@@ -39,7 +39,7 @@ Use the generated VLESS link in any compatible proxy client:
 This repository uses a fixed UUID for all sessions. You will never need to re-import the link:
 
 ```
-12345678-1234-1234-1234-123456789abc
+db9c5b9e-06b9-40cf-b987-575afcb30aea
 ```
 
 ### Xray Config
@@ -67,11 +67,11 @@ Once your Codespace is running, you can use these commands in the terminal:
 The VLESS links are displayed when you open the terminal:
 
 ```
-vless://12345678-1234-1234-1234-123456789abc@<CODESPACE>-443.app.github.dev:443?encryption=none&security=tls&sni=<CODESPACE>-443.app.github.dev&insecure=0&allowInsecure=0&type=ws&path=%2F#Kakool%20news
+vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@<CODESPACE>-443.app.github.dev:443?encryption=none&security=tls&sni=<CODESPACE>-443.app.github.dev&insecure=0&allowInsecure=0&type=ws&path=%2F#Kakool%20news
 
-vless://12345678-1234-1234-1234-123456789abc@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-1
+vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.103.221.187:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-1
 
-vless://12345678-1234-1234-1234-123456789abc@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-2
+vless://db9c5b9e-06b9-40cf-b987-575afcb30aea@20.90.66.7:443?encryption=none&security=tls&type=ws&path=%2F#Kakool%20news-2
 ```
 
 ## Codespace Quota
