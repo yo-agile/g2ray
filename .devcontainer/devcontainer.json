@@ -19,7 +19,7 @@
   "portsAttributes": {
     "443": {
       "label": "xray-vless",
-      "protocol": "http",
+      "protocol": "tcp",
       "onAutoForward": "silent"
     }
   },
