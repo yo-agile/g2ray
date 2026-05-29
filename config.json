@@ -11,8 +11,7 @@
   "policy": {
     "levels": {
       "0": {"statsUserUplink": true, "statsUserDownlink": true}
-    },
-    "system": {"statsInboundUplink": true, "statsInboundDownlink": true}
+    }
   },
   "inbounds": [
     {
@@ -21,8 +20,7 @@
       "settings": {
         "clients": [
           {
-            "id": "4b616b6f-6f6c-4e65-7773-b8e2c9f3d541",
-            "email": "user@example.com"
+            "id": "4b616b6f-6f6c-4e65-7773-b8e2c9f3d541"
           }
         ],
         "decryption": "none"
@@ -37,12 +35,6 @@
         "enabled": true,
         "destOverride": ["http", "tls"]
       }
-    },
-    {
-      "tag": "api",
-      "port": 8080,
-      "listen": "127.0.0.1",
-      "protocol": "api"
     }
   ],
   "outbounds": [
