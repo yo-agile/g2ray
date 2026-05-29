@@ -3,6 +3,17 @@
     "loglevel": "warning",
     "access": "none"
   },
+  "api": {
+    "tag": "api",
+    "services": ["HandlerService", "StatsService"]
+  },
+  "stats": {},
+  "policy": {
+    "levels": {
+      "0": {"statsUserUplink": true, "statsUserDownlink": true}
+    },
+    "system": {"statsInboundUplink": true, "statsInboundDownlink": true}
+  },
   "inbounds": [
     {
       "port": 443,
@@ -25,6 +36,12 @@
         "enabled": true,
         "destOverride": ["http", "tls"]
       }
+    },
+    {
+      "tag": "api",
+      "port": 8080,
+      "listen": "127.0.0.1",
+      "protocol": "api"
     }
   ],
   "outbounds": [
